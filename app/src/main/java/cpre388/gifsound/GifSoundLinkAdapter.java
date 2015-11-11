@@ -56,6 +56,7 @@ public class GifSoundLinkAdapter extends ArrayAdapter<GifSoundLink> {
         GifSoundLink gifSoundLink = data.get(position);
 
         //  TODO download image from url   holder.previewImage.setText(gifSoundLink);
+        new ThumbnailAsyncTask(holder.previewImage).execute(gifSoundLink.previewImageURL);
         holder.linkTitle.setText(gifSoundLink.title);
 
         return row;

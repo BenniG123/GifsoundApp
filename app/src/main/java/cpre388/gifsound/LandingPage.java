@@ -1,15 +1,11 @@
 package cpre388.gifsound;
 
-import android.app.Activity;
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,9 +16,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LandingPage extends ListActivity implements DownloadWebpageTask.ResultHandler{
+public class LandingPage extends ListActivity implements JSONAsyncTask.ResultHandler{
 
-    DownloadWebpageTask.ResultHandler handler;
+    JSONAsyncTask.ResultHandler handler;
     GifSoundLinkAdapter adapter;
     ListView linksListView;
 
@@ -43,12 +39,12 @@ public class LandingPage extends ListActivity implements DownloadWebpageTask.Res
                 artist = usernameView.getText().toString();
                 Log.e("Artist Searched", artist);
 
-                new DownloadWebpageTask(handler).execute("https://itunes.apple.com/search?term=" + artist.toLowerCase().replace(' ', '+') + "&entity=song&limit=20");
+                new JSONAsyncTask(handler).execute("https://itunes.apple.com/search?term=" + artist.toLowerCase().replace(' ', '+') + "&entity=song&limit=20");
             }
         }); */
 
         String query = "https://www.reddit.com/r/gifsound/.json?sort=hot";
-        new DownloadWebpageTask(handler).execute(query);
+        new JSONAsyncTask(handler).execute(query);
     }
 
     @Override
@@ -112,7 +108,6 @@ public class LandingPage extends ListActivity implements DownloadWebpageTask.Res
                 }
 
                 String title = childData.getString("title");
-
                 list.add(new GifSoundLink(link, thumbnail, title));
             }
 

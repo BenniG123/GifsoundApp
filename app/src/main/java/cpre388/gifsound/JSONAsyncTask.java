@@ -15,10 +15,10 @@ import java.net.URL;
  * Async task that downloads a specified web page.
  * @author Chris Williams
  */
-public class DownloadWebpageTask extends AsyncTask<String,Integer,String> {
+public class JSONAsyncTask extends AsyncTask<String,Integer,String> {
     private ResultHandler resultHandler;
 
-    public DownloadWebpageTask(ResultHandler resultHandler){
+    public JSONAsyncTask(ResultHandler resultHandler){
         this.resultHandler=resultHandler;
     }
     @Override
