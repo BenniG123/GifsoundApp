@@ -1,33 +1,54 @@
 package cpre388.gifsound;
 
 import android.app.Activity;
+import android.app.ListActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LandingPage extends Activity {
+public class LandingPage extends ListActivity implements DownloadWebpageTask.ResultHandler{
 
     DownloadWebpageTask.ResultHandler handler;
-
     GifSoundLinkAdapter adapter;
-
     ListView linksListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing_page);
-        String query = "https://www.reddit.com/r/gifsound/.json?sort=hot";
 
+        handler = this;
+        linksListView = (ListView) findViewById(android.R.id.list);
+
+        /* Button search = (Button)findViewById(R.id.search);
+        search.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                String artist = null;
+                TextView usernameView = (TextView) findViewById(R.id.username);
+                artist = usernameView.getText().toString();
+                Log.e("Artist Searched", artist);
+
+                new DownloadWebpageTask(handler).execute("https://itunes.apple.com/search?term=" + artist.toLowerCase().replace(' ', '+') + "&entity=song&limit=20");
+            }
+        }); */
+
+        String query = "https://www.reddit.com/r/gifsound/.json?sort=hot";
+        new DownloadWebpageTask(handler).execute(query);
     }
 
     @Override
@@ -54,19 +75,43 @@ public class LandingPage extends Activity {
 
     @Override
     public void handleResult(String result) {
-        //TODO Handle the Result of a Network Call
+        //Handle the Result of a Network Call
         try {
             JSONObject o = new JSONObject(result);
-            JSONArray jsonArray = o.getJSONArray("results");
+            JSONObject data = o.getJSONObject("data");
+            JSONArray jsonArray = data.getJSONArray("children");
 
             List<GifSoundLink> list = new ArrayList<GifSoundLink>();
 
             for(int i = 0; i < jsonArray.length(); i++){
                 JSONObject obj = jsonArray.getJSONObject(i);
-                String title = obj.getString("collectionName");
-                String album = obj.getString("trackName");
+                JSONObject childData = obj.getJSONObject("data");
 
-                list.add(new GifSoundLink(album, title));
+                URL thumbnail = null;
+                try {
+                    thumbnail = new URL(childData.getString("thumbnail"));
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (thumbnail == null) {
+
+                    }
+                }
+
+                URL link = null;
+                try {
+                    link = new URL(childData.getString("url"));
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (link == null) {
+
+                    }
+                }
+
+                String title = obj.getString("title");
+
+                list.add(new GifSoundLink(link, thumbnail, title));
             }
 
             adapter = new GifSoundLinkAdapter(this, R.layout.gifsoundlinklayout, list);

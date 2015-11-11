@@ -43,7 +43,7 @@ public class GifSoundLinkAdapter extends ArrayAdapter<GifSoundLink> {
 
             //create a new ItunesHolder and set it to the fields the row in the list view
             holder = new GifSoundHolder();
-            
+
             holder.previewImage = (ImageView) row.findViewById(R.id.previewImage);
             holder.linkTitle = (TextView) row.findViewById(R.id.linkTitle);
 
@@ -54,7 +54,6 @@ public class GifSoundLinkAdapter extends ArrayAdapter<GifSoundLink> {
 
         //get the current position from the list
         GifSoundLink gifSoundLink = data.get(position);
-
 
         //  TODO download image from url   holder.previewImage.setText(gifSoundLink);
         holder.linkTitle.setText(gifSoundLink.title);

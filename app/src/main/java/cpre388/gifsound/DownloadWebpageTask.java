@@ -1,8 +1,10 @@
 package cpre388.gifsound;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -27,9 +29,12 @@ public class DownloadWebpageTask extends AsyncTask<String,Integer,String> {
             String webpageContents = readStream(httpURLConnection.getInputStream());
             return webpageContents;
         }
-        catch (MalformedURLException e){
-        }
-        catch (java.io.IOException e){
+        //catch (MalformedURLException e) {
+        catch (IOException e) {
+            e.printStackTrace();
+            if (e instanceof MalformedURLException){
+                Log.e("Malformed URL", "");
+            }
         }
         return "";
     }
