@@ -2,10 +2,25 @@ package cpre388.gifsound;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LandingPage extends Activity {
+
+    DownloadWebpageTask.ResultHandler handler;
+
+    GifSoundLinkAdapter adapter;
+
+    ListView linksListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,5 +50,33 @@ public class LandingPage extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void handleResult(String result) {
+        //TODO Handle the Result of a Network Call
+        try {
+            JSONObject o = new JSONObject(result);
+            JSONArray jsonArray = o.getJSONArray("results");
+
+            List<GifSoundLink> list = new ArrayList<GifSoundLink>();
+
+            for(int i = 0; i < jsonArray.length(); i++){
+                JSONObject obj = jsonArray.getJSONObject(i);
+                String title = obj.getString("collectionName");
+                String album = obj.getString("trackName");
+
+                list.add(new GifSoundLink(album, title));
+            }
+
+            adapter = new GifSoundLinkAdapter(this, R.layout.gifsoundlinklayout, list);
+
+            linksListView.setAdapter(adapter);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.e("Exception", "Request not completed");
+        }
+
+
     }
 }
