@@ -11,6 +11,8 @@ public class LandingPage extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing_page);
+        String query = "https://www.reddit.com/r/gifsound/.json?sort=hot";
+
     }
 
     @Override
