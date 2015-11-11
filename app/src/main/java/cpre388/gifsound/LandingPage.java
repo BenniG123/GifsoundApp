@@ -90,6 +90,7 @@ public class LandingPage extends ListActivity implements DownloadWebpageTask.Res
                 URL thumbnail = null;
                 try {
                     thumbnail = new URL(childData.getString("thumbnail"));
+                    Log.d("thumbnail", thumbnail.toString());
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } finally {
@@ -101,6 +102,7 @@ public class LandingPage extends ListActivity implements DownloadWebpageTask.Res
                 URL link = null;
                 try {
                     link = new URL(childData.getString("url"));
+                    Log.d("link", link.toString());
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } finally {
@@ -109,7 +111,7 @@ public class LandingPage extends ListActivity implements DownloadWebpageTask.Res
                     }
                 }
 
-                String title = obj.getString("title");
+                String title = childData.getString("title");
 
                 list.add(new GifSoundLink(link, thumbnail, title));
             }
