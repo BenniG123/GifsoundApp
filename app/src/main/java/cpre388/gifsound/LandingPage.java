@@ -10,6 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -177,6 +178,8 @@ public class LandingPage extends ListActivity implements JSONAsyncTask.ResultHan
     public void seeLinkComments(View v){
         //get the row the clicked button is in
         LinearLayout rowButtonClicked = (LinearLayout)v.getParent();
+
+        //TODO uncomment button from gifsoundlinklayout.xml once functionality to press button and listview row both work
 
         //TODO find out what row rowButtonClicked was in the list, and open a page to view the
         //TODO corresponding link's comments from reddit

@@ -26,12 +26,14 @@
             android:id="@+id/timeSubmittedAndAuthor"/>
     </LinearLayout>
 
+    <!--
     <ImageButton
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:id="@+id/viewRedditCommentsButton"
         android:layout_gravity="right"
         android:onClick="seeLinkComments"/>
+        -->
 
 
 </LinearLayout>
