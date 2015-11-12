@@ -16,26 +16,31 @@ import java.net.URL;
  * Created by abjensen on 11/11/2015.
  */
 public class ThumbnailAsyncTask extends AsyncTask<URL, Integer, Bitmap> {
-    ImageView imageView;
+    //ImageView imageView;
 
-    public ThumbnailAsyncTask(ImageView i){
-        imageView = i;
+    public ThumbnailAsyncTask(){
+        //imageView = i;
     }
     @Override
     protected Bitmap doInBackground(URL... params) {
-        Bitmap image = null;
-        try {
-            HttpURLConnection connection = (HttpURLConnection) params[0].openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            image = BitmapFactory.decodeStream(input);
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        if (params[0] != null) {
+            Bitmap image = null;
+            try {
+                HttpURLConnection connection = (HttpURLConnection) params[0].openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                image = BitmapFactory.decodeStream(input);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+
+            return image;
+        } else {
             return null;
         }
-
-        return image;
     }
 
     @Override
@@ -44,6 +49,8 @@ public class ThumbnailAsyncTask extends AsyncTask<URL, Integer, Bitmap> {
     }
 
     protected void onPostExecute(Bitmap result){
-        imageView.setImageBitmap(result);
+        if (result != null) {
+            //imageView.setImageBitmap(result);
+        }
     }
 }

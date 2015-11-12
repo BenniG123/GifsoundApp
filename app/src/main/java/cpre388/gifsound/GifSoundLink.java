@@ -1,5 +1,7 @@
 package cpre388.gifsound;
 
+import android.graphics.Bitmap;
+
 import java.net.URL;
 
 /**
@@ -9,6 +11,7 @@ public class GifSoundLink {
 
     public URL gifSoundLinkURL;
     public URL previewImageURL;
+    public Bitmap bitmap;
     public String title;
 
     public GifSoundLink(URL linkURL, URL imageURL, String gTitle) {
@@ -16,6 +19,7 @@ public class GifSoundLink {
         gifSoundLinkURL = linkURL;
         previewImageURL = imageURL;
         title = gTitle;
+        bitmap = null;
     }
 
 }

@@ -1,11 +1,16 @@
 package cpre388.gifsound;
 
 import android.app.ListActivity;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,6 +35,13 @@ public class LandingPage extends ListActivity implements JSONAsyncTask.ResultHan
         handler = this;
         linksListView = (ListView) findViewById(android.R.id.list);
 
+//        linksListView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                adapter.getItem()
+//            }
+//        });
+
         /* Button search = (Button)findViewById(R.id.search);
         search.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -45,6 +57,13 @@ public class LandingPage extends ListActivity implements JSONAsyncTask.ResultHan
 
         String query = "https://www.reddit.com/r/gifsound/.json?sort=hot";
         new JSONAsyncTask(handler).execute(query);
+    }
+
+    @Override
+    protected void onListItemClick (ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        Intent gifsoundIntent = new Intent(Intent.ACTION_VIEW, adapter.data.get(position).gifSoundLinkURL);
+        startActivity(browserIntent);
     }
 
     @Override

@@ -3,14 +3,19 @@ package cpre388.gifsound;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import java.net.URL;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by abjensen on 11/11/2015.
@@ -19,7 +24,7 @@ public class GifSoundLinkAdapter extends ArrayAdapter<GifSoundLink> {
 
     private Context context;
     private int layoutResourceId;
-    private List<GifSoundLink> data = null;
+    public List<GifSoundLink> data = null;
 
     public GifSoundLinkAdapter(Context context, int layoutResourceId, List<GifSoundLink> data) {
         super(context, layoutResourceId, data);
@@ -37,26 +42,37 @@ public class GifSoundLinkAdapter extends ArrayAdapter<GifSoundLink> {
         View row = convertView;
         GifSoundHolder holder;
 
+        //get the current position from the list
+        GifSoundLink gifSoundLink = data.get(position);
+
         if (row == null) {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
 
-            //create a new ItunesHolder and set it to the fields the row in the list view
+            //create a new GifSoundHolder and set it to the fields the row in the list view
             holder = new GifSoundHolder();
 
             holder.previewImage = (ImageView) row.findViewById(R.id.previewImage);
             holder.linkTitle = (TextView) row.findViewById(R.id.linkTitle);
 
             row.setTag(holder);
+
         } else {
             holder = (GifSoundHolder) row.getTag();
         }
 
-        //get the current position from the list
-        GifSoundLink gifSoundLink = data.get(position);
+        if (gifSoundLink.bitmap == null) {
+            ThumbnailAsyncTask a = new ThumbnailAsyncTask();
+            try {
+                gifSoundLink.bitmap = a.execute(gifSoundLink.previewImageURL).get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
-        //  TODO download image from url   holder.previewImage.setText(gifSoundLink);
-        new ThumbnailAsyncTask(holder.previewImage).execute(gifSoundLink.previewImageURL);
+        holder.previewImage.setImageBitmap(gifSoundLink.bitmap);
         holder.linkTitle.setText(gifSoundLink.title);
 
         return row;
