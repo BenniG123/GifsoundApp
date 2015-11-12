@@ -31,6 +31,12 @@ public class GifSoundView extends Activity {
             URLs.add( intent.getStringExtra("URL" + i));
             //Log.d("URL", URLs.get(i));
         }
+
+        //Create fragment for the selected link
+        Bundle bundle = new Bundle();
+        bundle.putString("GifSoundLink", URLs.get(viewingIndex));
+        GifSoundViewFragment currentFragment = new GifSoundViewFragment();
+        currentFragment.setArguments(bundle);
     }
 
 
