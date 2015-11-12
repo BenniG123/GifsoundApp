@@ -52,7 +52,7 @@ public class GifSoundView extends Activity {
             GifSoundViewFragment currentFragment = new GifSoundViewFragment();
             currentFragment.setArguments(bundle);
 
-            fragments.set(viewingIndex, currentFragment);
+            fragments.add(currentFragment);
 
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.add(CONTENT_VIEW_ID, currentFragment).commit();

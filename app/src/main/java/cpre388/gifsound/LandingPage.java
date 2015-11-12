@@ -3,13 +3,18 @@ package cpre388.gifsound;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -23,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LandingPage extends ListActivity implements JSONAsyncTask.ResultHandler{
+    private SwipeRefreshLayout swipeContainer;
 
     JSONAsyncTask.ResultHandler handler;
     GifSoundLinkAdapter adapter;
@@ -32,6 +38,25 @@ public class LandingPage extends ListActivity implements JSONAsyncTask.ResultHan
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing_page);
+
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                //TODO code to call when refreshing page
+            }
+        });
+
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+
 
         handler = this;
         linksListView = (ListView) findViewById(android.R.id.list);
@@ -147,5 +172,15 @@ public class LandingPage extends ListActivity implements JSONAsyncTask.ResultHan
         }
 
 
+    }
+
+    public void seeLinkComments(View v){
+        //get the row the clicked button is in
+        LinearLayout rowButtonClicked = (LinearLayout)v.getParent();
+
+        //TODO find out what row rowButtonClicked was in the list, and open a page to view the
+        //TODO corresponding link's comments from reddit
+
+        rowButtonClicked.refreshDrawableState();
     }
 }
