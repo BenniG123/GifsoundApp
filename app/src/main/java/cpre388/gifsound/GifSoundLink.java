@@ -1,7 +1,7 @@
 package cpre388.gifsound;
 
 import android.graphics.Bitmap;
-
+import java.io.Serializable;
 import java.net.URL;
 
 /**
