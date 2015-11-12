@@ -1,17 +1,24 @@
 package cpre388.gifsound;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GifSoundView extends Activity {
+    private static final int CONTENT_VIEW_ID = 0;
 
     List<GifSoundViewFragment> fragments = new ArrayList<>();
     List<String> URLs = new ArrayList<>();
@@ -21,7 +28,8 @@ public class GifSoundView extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gif_sound_view);
+
+        //setContentView(R.layout.activity_gif_sound_view);
         Intent intent = getIntent();
 
         viewingIndex = intent.getIntExtra("ViewingIndex", 0);
@@ -32,11 +40,23 @@ public class GifSoundView extends Activity {
             //Log.d("URL", URLs.get(i));
         }
 
-        //Create fragment for the selected link
-        Bundle bundle = new Bundle();
-        bundle.putString("GifSoundLink", URLs.get(viewingIndex));
-        GifSoundViewFragment currentFragment = new GifSoundViewFragment();
-        currentFragment.setArguments(bundle);
+        FrameLayout frame = new FrameLayout(this);
+        frame.setId(CONTENT_VIEW_ID);
+        setContentView(frame, new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+
+        if (savedInstanceState == null) {
+            //Create fragment for the selected link
+            Bundle bundle = new Bundle();
+            bundle.putString("GifSoundLink", URLs.get(viewingIndex));
+            GifSoundViewFragment currentFragment = new GifSoundViewFragment();
+            currentFragment.setArguments(bundle);
+
+            fragments.set(viewingIndex, currentFragment);
+
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.add(CONTENT_VIEW_ID, currentFragment).commit();
+        }
     }
 
 
@@ -61,4 +81,5 @@ public class GifSoundView extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

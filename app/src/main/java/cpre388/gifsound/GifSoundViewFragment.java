@@ -24,6 +24,8 @@ public class GifSoundViewFragment extends Fragment {
         link = getArguments().getString("GifSoundLink");
         media = GifSoundLinkParser.parseLink(link);
 
+        //TODO set view with objects created
+
         return inflater.inflate(R.layout.fragment_gif_sound_view, container, false);
     }
 }
