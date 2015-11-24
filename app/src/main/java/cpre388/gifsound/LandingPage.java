@@ -61,6 +61,8 @@ public class LandingPage extends ListActivity implements JSONAsyncTask.ResultHan
                 // once the network request has completed successfully.
                 if(adapter != null){
                     adapter.clear();
+                    adapter.data.clear();
+                    linksListView.setOnScrollListener(new EndlessScrollListener());
                     try {
                         new JSONAsyncTask(handler).execute(generateFetchURL()).get(10000, TimeUnit.MILLISECONDS);
                     } catch(TimeoutException e) {
