@@ -28,6 +28,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class LandingPage extends ListActivity implements JSONAsyncTask.ResultHandler{
     enum sortStyle{
@@ -56,7 +59,24 @@ public class LandingPage extends ListActivity implements JSONAsyncTask.ResultHan
                 // Your code to refresh the list here.
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
-                //TODO code to call when refreshing page
+                if(adapter != null){
+                    adapter.clear();
+                    try {
+                        new JSONAsyncTask(handler).execute(generateFetchURL()).get(10000, TimeUnit.MILLISECONDS);
+                    } catch(TimeoutException e) {
+                        //TODO eventually print toast that refresh timed-out
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        //not sure what causes this exception
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        //not sure what causes this exception
+                        e.printStackTrace();
+                    } finally {
+                        adapter.notifyDataSetChanged();
+                        swipeContainer.setRefreshing(false);
+                    }
+                }
             }
         });
 
