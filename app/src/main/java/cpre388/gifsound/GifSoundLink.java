@@ -13,13 +13,14 @@ public class GifSoundLink {
     public URL previewImageURL;
     public Bitmap bitmap;
     public String title;
+    public String redditLink;
 
-    public GifSoundLink(URL linkURL, URL imageURL, String gTitle) {
-        super();
+    public GifSoundLink(URL linkURL, URL imageURL, String gTitle, String link) {
         gifSoundLinkURL = linkURL;
         previewImageURL = imageURL;
         title = gTitle;
         bitmap = null;
+        redditLink = link;
     }
 
 }
