@@ -3,12 +3,15 @@ package cpre388.gifsound;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -43,7 +46,7 @@ public class GifSoundLinkAdapter extends ArrayAdapter<GifSoundLink> {
         GifSoundHolder holder;
 
         //get the current position from the list
-        GifSoundLink gifSoundLink = data.get(position);
+        final GifSoundLink gifSoundLink = data.get(position);
 
         if (row == null) {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
@@ -54,6 +57,7 @@ public class GifSoundLinkAdapter extends ArrayAdapter<GifSoundLink> {
 
             holder.previewImage = (ImageView) row.findViewById(R.id.previewImage);
             holder.linkTitle = (TextView) row.findViewById(R.id.linkTitle);
+            holder.commentsButton = (Button) row.findViewById((R.id.viewRedditCommentsButton));
 
             row.setTag(holder);
 
@@ -75,6 +79,16 @@ public class GifSoundLinkAdapter extends ArrayAdapter<GifSoundLink> {
         holder.previewImage.setImageBitmap(gifSoundLink.bitmap);
         holder.linkTitle.setText(gifSoundLink.title);
 
+        holder.commentsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent commentsIntent = new Intent(context, RedditComments.class);
+
+                commentsIntent.putExtra("redditLinkName", gifSoundLink.redditLink);
+                context.startActivity(commentsIntent);
+            }
+        });
+
         return row;
     }
 
@@ -85,5 +99,7 @@ public class GifSoundLinkAdapter extends ArrayAdapter<GifSoundLink> {
     {
         ImageView previewImage;
         TextView linkTitle;
+        TextView postAuthorDate;
+        Button commentsButton;
     }
 }
