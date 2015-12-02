@@ -123,7 +123,7 @@ public class LandingPage extends ListActivity implements JSONAsyncTask.ResultHan
     @Override
     protected void onListItemClick (ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        Intent gifsoundIntent = new Intent(this, GifSoundView.class);
+        Intent gifsoundIntent = new Intent(this, GifSoundViewActivity.class);
 
         for (int i = 0; i < adapter.data.size(); i++) {
             gifsoundIntent.putExtra("URL" + i, adapter.data.get(i).gifSoundLinkURL.toString());
@@ -173,7 +173,6 @@ public class LandingPage extends ListActivity implements JSONAsyncTask.ResultHan
                 URL thumbnail = null;
                 try {
                     thumbnail = new URL(childData.getString("thumbnail"));
-                    Log.d("thumbnail", thumbnail.toString());
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } finally {
@@ -185,7 +184,6 @@ public class LandingPage extends ListActivity implements JSONAsyncTask.ResultHan
                 URL link = null;
                 try {
                     link = new URL(childData.getString("url"));
-                    Log.d("link", link.toString());
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } finally {
@@ -195,12 +193,8 @@ public class LandingPage extends ListActivity implements JSONAsyncTask.ResultHan
                 }
 
                 String name = childData.getString("name");
-                Log.d("name", name.toString());
 
                 String title = childData.getString("title");
-                Log.d("title", title.toString());
-
-                Log.d("LINE", "LINE");
                 list.add(new GifSoundLink(link, thumbnail, title, name));
             }
 
@@ -264,7 +258,6 @@ public class LandingPage extends ListActivity implements JSONAsyncTask.ResultHan
             }
             if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
                 String finalURL = generateFetchURL();
-                Log.d("finalURL", finalURL);
                 new JSONAsyncTask(handler).execute(finalURL);
 
                 loading = true;

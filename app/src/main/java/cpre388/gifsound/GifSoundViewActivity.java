@@ -2,22 +2,23 @@ package cpre388.gifsound;
 
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.app.Activity;
-import android.view.View;
-import android.widget.Toast;
+import android.util.Log;
+import android.view.ViewGroup;
 
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
 
+import java.io.InputStream;
+
 public class GifSoundViewActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
 
     public static final String API_KEY = "AIzaSyBb7IPHhczdj-FAiUN8Yli3_TQj-TDTyZI";
-//    public static final String VIDEO_ID = "1HmQNkcAhgg";
+    public static final String VIDEO_ID = "1HmQNkcAhgg";
 
     String GifSoundLink;
-    String VIDEO_ID, GIF_ID;
+    //String VIDEO_ID, GIF_ID;
     int VIDEO_TIME;
 
     private YouTubePlayer youTubePlayer;
@@ -29,11 +30,19 @@ public class GifSoundViewActivity extends YouTubeBaseActivity implements YouTube
         setContentView(R.layout.activity_gif_sound_view);
 
         GifSoundLink = getIntent().getStringExtra("GifSoundLink");
-        parseURL(GifSoundLink);
+        //parseURL(GifSoundLink);
 
         youTubePlayerFragment = (YouTubePlayerFragment) getFragmentManager()
                 .findFragmentById(R.id.youtube_fragment);
         youTubePlayerFragment.initialize(API_KEY, this);
+
+        InputStream stream = null;
+        stream = getResources().openRawResource(R.raw.test_gif);
+
+        MovieView movieView = new MovieView(this, stream);
+        ViewGroup viewGroup = (ViewGroup) findViewById(android.R.id.content);
+
+        viewGroup.addView(movieView);
     }
 
     @Override
@@ -56,9 +65,9 @@ public class GifSoundViewActivity extends YouTubeBaseActivity implements YouTube
 
     private void parseURL(String link) {
 //        Toast.makeText(this, link, Toast.LENGTH_LONG).show();
-        VIDEO_ID = link.substring(link.indexOf(";v=")+3);
-        VIDEO_TIME = Integer.parseInt(VIDEO_ID.substring(VIDEO_ID.indexOf(";s=")+3));
-        VIDEO_ID = VIDEO_ID.substring(0, VIDEO_ID.indexOf("&"));
+//        VIDEO_ID = link.substring(link.indexOf(";v=")+3);
+        VIDEO_TIME = Integer.parseInt(VIDEO_ID.substring(VIDEO_ID.indexOf(";s=") + 3));
+//        VIDEO_ID = VIDEO_ID.substring(0, VIDEO_ID.indexOf("&"));
 //        GIF_ID =
     }
 }
