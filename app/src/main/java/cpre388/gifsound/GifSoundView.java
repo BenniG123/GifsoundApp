@@ -49,13 +49,18 @@ public class GifSoundView extends Activity {
             //Create fragment for the selected link
             Bundle bundle = new Bundle();
             bundle.putString("GifSoundLink", URLs.get(viewingIndex));
-            GifSoundViewFragment currentFragment = new GifSoundViewFragment();
-            currentFragment.setArguments(bundle);
 
-            fragments.add(currentFragment);
+            Intent gifIntent = new Intent (this, GifSoundViewActivity.class);
+            startActivity(gifIntent);
 
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.add(CONTENT_VIEW_ID, currentFragment).commit();
+            
+//            GifSoundViewFragment currentFragment = new GifSoundViewFragment();
+//            currentFragment.setArguments(bundle);
+//
+//            fragments.add(currentFragment);
+//
+//            FragmentTransaction ft = getFragmentManager().beginTransaction();
+//            ft.add(CONTENT_VIEW_ID, currentFragment).commit();
         }
     }
 

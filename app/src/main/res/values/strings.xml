@@ -4,6 +4,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_gif_sound_view">GifSoundView</string>
+    <string name="title_activity_gif_sound_view_activity">GifSoundViewActivity</string>
     <string name="title_activity_reddit_comments">RedditComments</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
