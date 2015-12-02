@@ -60,6 +60,6 @@ public class GifSoundViewActivity extends YouTubeBaseActivity implements YouTube
         VIDEO_ID = link.substring(link.indexOf(";v=")+3);
         VIDEO_TIME = Integer.parseInt(VIDEO_ID.substring(VIDEO_ID.indexOf(";s=") + 3));
         VIDEO_ID = VIDEO_ID.substring(0, VIDEO_ID.indexOf("&"));
-        GIF_ID = link.substring(link.indexOf("gif=")+ 4, link.indexOf("&amp"));
+//        GIF_ID = link.substring(link.indexOf("gif=")+ 4, link.indexOf("&amp"));
     }
 }

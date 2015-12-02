@@ -123,12 +123,11 @@ public class LandingPage extends ListActivity implements JSONAsyncTask.ResultHan
     @Override
     protected void onListItemClick (ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        Intent gifsoundIntent = new Intent(this, GifSoundView.class);
+        Intent gifsoundIntent = new Intent(this, GifSoundViewActivity.class);
 
         for (int i = 0; i < adapter.data.size(); i++) {
             gifsoundIntent.putExtra("URL" + i, adapter.data.get(i).gifSoundLinkURL.toString());
         }
-
         gifsoundIntent.putExtra("ViewingIndex", position);
         gifsoundIntent.putExtra("Size", adapter.data.size());
         startActivity(gifsoundIntent);
