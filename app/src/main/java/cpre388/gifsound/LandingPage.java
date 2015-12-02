@@ -128,7 +128,6 @@ public class LandingPage extends ListActivity implements JSONAsyncTask.ResultHan
         for (int i = 0; i < adapter.data.size(); i++) {
             gifsoundIntent.putExtra("URL" + i, adapter.data.get(i).gifSoundLinkURL.toString());
         }
-
         gifsoundIntent.putExtra("ViewingIndex", position);
         gifsoundIntent.putExtra("Size", adapter.data.size());
         startActivity(gifsoundIntent);
