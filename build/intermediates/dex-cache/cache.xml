@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\AndroidSDK\extras\android\m2repository\com\android\support\support-annotations\23.0.1\support-annotations-23.0.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1fce89a6428c51467090d7f424e4c9c3dbd55f7e">
+        <dex dex="C:\Users\abjensen\AndroidStudioProjects\GifsoundApp\app\build\intermediates\pre-dexed\debug\support-annotations-23.0.1-fb775423d8ae5f7ee78c997a3ba67c158f7299bd.jar" />
+    </item>
+    <item
+        jar="C:\Users\abjensen\AndroidStudioProjects\GifsoundApp\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
+        <dex dex="C:\Users\abjensen\AndroidStudioProjects\GifsoundApp\app\build\intermediates\pre-dexed\debug\classes-588fab027538cb1f881ef80a3bcc107c22a304b7.jar" />
+    </item>
+    <item
+        jar="C:\Users\abjensen\AndroidStudioProjects\GifsoundApp\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\libs\internal_impl-23.0.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="aa92916125166649d8ad4ba3940c3dd7515596d3">
+        <dex dex="C:\Users\abjensen\AndroidStudioProjects\GifsoundApp\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.1-5df1ed8be8a0e30ac11b46218d27384107ad9b07.jar" />
+    </item>
+    <item
+        jar="C:\Users\abjensen\AndroidStudioProjects\GifsoundApp\app\libs\YouTubeAndroidPlayerApi.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="3c4f96ff493456651cc7bdb0b47e10eb25545a16">
+        <dex dex="C:\Users\abjensen\AndroidStudioProjects\GifsoundApp\app\build\intermediates\pre-dexed\debug\YouTubeAndroidPlayerApi-4ab61936bd0bb5da5556039ceb938062aadb40c5.jar" />
+    </item>
+
+</items>
