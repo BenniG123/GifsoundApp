@@ -191,7 +191,7 @@ public class LandingPage extends ListActivity implements JSONAsyncTask.ResultHan
                     }
                 }
 
-                String name = childData.getString("name");
+                String name = childData.getString("id");
 
                 String title = childData.getString("title");
                 list.add(new GifSoundLink(link, thumbnail, title, name));

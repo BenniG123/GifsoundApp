@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,10 +83,14 @@ public class GifSoundLinkAdapter extends ArrayAdapter<GifSoundLink> {
         holder.commentsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent commentsIntent = new Intent(context, RedditComments.class);
+//                Intent commentsIntent = new Intent(context, RedditComments.class);
+//
+//                commentsIntent.putExtra("redditLinkName", gifSoundLink.redditLink);
+//                context.startActivity(commentsIntent);
 
-                commentsIntent.putExtra("redditLinkName", gifSoundLink.redditLink);
-                context.startActivity(commentsIntent);
+                Intent openAppIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://redd.it/" + gifSoundLink.redditLink));
+                Intent chooseBrowserIntent = Intent.createChooser(openAppIntent, "Choose your browser");
+                context.startActivity(chooseBrowserIntent);
             }
         });
 
