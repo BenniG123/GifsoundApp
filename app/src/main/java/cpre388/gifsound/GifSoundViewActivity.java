@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.Toast;
 
 import com.google.android.youtube.player.YouTubeBaseActivity;
@@ -17,7 +18,7 @@ public class GifSoundViewActivity extends YouTubeBaseActivity implements YouTube
     public static final String API_KEY = "AIzaSyBb7IPHhczdj-FAiUN8Yli3_TQj-TDTyZI";
 
     String GifSoundLink;
-    String VIDEO_ID, GIF_ID;
+    String VIDEO_ID, GIF_URL;
     int VIDEO_TIME = 0;
 
     private YouTubePlayer youTubePlayer;
@@ -39,6 +40,11 @@ public class GifSoundViewActivity extends YouTubeBaseActivity implements YouTube
         ViewGroup vg = (ViewGroup) findViewById(android.R.id.content);
 
         vg.addView(new MovieView(this));
+
+        WebView image = (WebView) findViewById(R.id.web_image);
+        image.setBackgroundColor(0);
+        image.loadUrl(GIF_URL);
+
     }
 
     @Override
@@ -69,13 +75,14 @@ public class GifSoundViewActivity extends YouTubeBaseActivity implements YouTube
 
         if (link.contains("gifv=")) {
             //gifv gifs are encoded with just an id and are from i.imgur.com/ID.gif
-            GIF_ID = link.substring(link.indexOf("gifv=")+5, link.indexOf("&"));
+            GIF_URL = link.substring(link.indexOf("gifv=")+5, link.indexOf("&"));
+            GIF_URL = "http://i.imgur.com/"+ GIF_URL +".gifv";    //GIF_URL = website
         }
         else if (link.contains("gif=")) {
             //All other images are sent with gif=website
-            GIF_ID = link.substring(link.indexOf("gif=")+4, link.indexOf("&"));
+            GIF_URL = link.substring(link.indexOf("gif=")+4, link.indexOf("&"));
         }
-        Toast.makeText(this, GIF_ID, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, GIF_URL, Toast.LENGTH_LONG).show();
 
     }
 }
