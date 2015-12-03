@@ -20,24 +20,25 @@
         android:layout_gravity="center_horizontal"
         android:autoLink="web" />
 
+    <WebView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/web_image"/>
+
     <fragment
         android:name="com.google.android.youtube.player.YouTubePlayerFragment"
         android:id="@+id/youtube_fragment"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:visibility="visible">
     </fragment>
 
-    <cpre388.gifsound.MovieView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onGifClick"
-        custom:gif="@raw/test_gif"/>
+    <!--<cpre388.gifsound.MovieView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:onClick="onGifClick"-->
+        <!--custom:gif="@raw/test_gif"/>-->
 
-    <WebView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/web_image"/>
 
 </LinearLayout>

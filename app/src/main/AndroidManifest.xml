@@ -21,7 +21,8 @@
         <activity
             android:name=".GifSoundViewActivity"
             android:label="@string/title_activity_gif_sound_view_activity"
-            android:parentActivityName=".LandingPage">
+            android:parentActivityName=".LandingPage"
+            android:hardwareAccelerated="true">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cpre388.gifsound.LandingPage" />
