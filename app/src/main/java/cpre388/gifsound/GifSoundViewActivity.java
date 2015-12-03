@@ -15,11 +15,10 @@ import com.google.android.youtube.player.YouTubePlayerFragment;
 public class GifSoundViewActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
 
     public static final String API_KEY = "AIzaSyBb7IPHhczdj-FAiUN8Yli3_TQj-TDTyZI";
-    public static final String VIDEO_ID = "1HmQNkcAhgg";
 
     String GifSoundLink;
-    //String VIDEO_ID, GIF_ID;
-    int VIDEO_TIME;
+    String VIDEO_ID, GIF_ID;
+    int VIDEO_TIME = 0;
 
     private YouTubePlayer youTubePlayer;
     private YouTubePlayerFragment youTubePlayerFragment;
@@ -29,7 +28,8 @@ public class GifSoundViewActivity extends YouTubeBaseActivity implements YouTube
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gif_sound_view);
 
-        GifSoundLink = getIntent().getStringExtra("GifSoundLink");
+        int viewingIndex = getIntent().getIntExtra("ViewingIndex", 0);
+        GifSoundLink = getIntent().getStringExtra("URL" + viewingIndex);
         parseURL(GifSoundLink);
 
         youTubePlayerFragment = (YouTubePlayerFragment) getFragmentManager()
@@ -60,10 +60,22 @@ public class GifSoundViewActivity extends YouTubeBaseActivity implements YouTube
     }
 
     private void parseURL(String link) {
-//        Toast.makeText(this, link, Toast.LENGTH_LONG).show();
-//        VIDEO_ID = link.substring(link.indexOf(";v=")+3);
-//        VIDEO_TIME = Integer.parseInt(VIDEO_ID.substring(VIDEO_ID.indexOf(";s=")+3));
-//        VIDEO_ID = VIDEO_ID.substring(0, VIDEO_ID.indexOf("&"));
-//        GIF_ID =
+        Toast.makeText(this, link, Toast.LENGTH_LONG).show();
+        VIDEO_ID = link.substring(link.indexOf(";v=") + 3);
+        if (VIDEO_ID.contains("&")) {
+            VIDEO_TIME = Integer.parseInt(VIDEO_ID.substring(VIDEO_ID.indexOf(";s=")+3));
+            VIDEO_ID = VIDEO_ID.substring(0, VIDEO_ID.indexOf("&"));
+        }
+
+        if (link.contains("gifv=")) {
+            //gifv gifs are encoded with just an id and are from i.imgur.com/ID.gif
+            GIF_ID = link.substring(link.indexOf("gifv=")+5, link.indexOf("&"));
+        }
+        else if (link.contains("gif=")) {
+            //All other images are sent with gif=website
+            GIF_ID = link.substring(link.indexOf("gif=")+4, link.indexOf("&"));
+        }
+        Toast.makeText(this, GIF_ID, Toast.LENGTH_LONG).show();
+
     }
 }
