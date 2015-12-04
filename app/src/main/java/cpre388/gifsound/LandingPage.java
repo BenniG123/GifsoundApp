@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.Menu;
@@ -13,9 +15,12 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +42,8 @@ public class LandingPage extends ListActivity implements JSONAsyncTask.ResultHan
         HOT, NEW, RISING, CONTROVERSIAL, TOP_HOUR, TOP_24_HOURS, TOP_WEEK, TOP_MONTH, TOP_YEAR, TOP_ALL_TIME
     }
 
+    final Context context = this;
+
     JSONAsyncTask.ResultHandler handler;
     GifSoundLinkAdapter adapter;
 
@@ -45,7 +52,6 @@ public class LandingPage extends ListActivity implements JSONAsyncTask.ResultHan
 
     //TODO change this variable based on the selected sorting style
     sortStyle currentSortingStyle = sortStyle.HOT;
-    int postLoadCount = 25;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,24 +66,7 @@ public class LandingPage extends ListActivity implements JSONAsyncTask.ResultHan
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
                 if(adapter != null){
-                    adapter.clear();
-                    adapter.data.clear();
-                    linksListView.setOnScrollListener(new EndlessScrollListener());
-                    try {
-                        new JSONAsyncTask(handler).execute(generateFetchURL()).get(10000, TimeUnit.MILLISECONDS);
-                    } catch(TimeoutException e) {
-                        //TODO eventually print toast that refresh timed-out
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        //not sure what causes this exception
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        //not sure what causes this exception
-                        e.printStackTrace();
-                    } finally {
-                        adapter.notifyDataSetChanged();
-                        swipeContainer.setRefreshing(false);
-                    }
+                    refresh();
                 }
             }
         });
@@ -93,31 +82,42 @@ public class LandingPage extends ListActivity implements JSONAsyncTask.ResultHan
         handler = this;
         linksListView = (ListView) findViewById(android.R.id.list);
 
-//        linksListView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                adapter.getItem()
-//            }
-//        });
-
-        /* Button search = (Button)findViewById(R.id.search);
-        search.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-                String artist = null;
-                TextView usernameView = (TextView) findViewById(R.id.username);
-                artist = usernameView.getText().toString();
-                Log.e("Artist Searched", artist);
-
-                new JSONAsyncTask(handler).execute("https://itunes.apple.com/search?term=" + artist.toLowerCase().replace(' ', '+') + "&entity=song&limit=20");
-            }
-        }); */
-
         //uses inner class to call to reddit for more posts when at bottom of the listview
         linksListView.setOnScrollListener(new EndlessScrollListener());
 
         String query = generateFetchURL();
         new JSONAsyncTask(handler).execute(query);
+    }
+
+    private void refresh(){
+        adapter.clear();
+        adapter.data.clear();
+        linksListView.setOnScrollListener(new EndlessScrollListener());
+
+        Runnable refreshThread = new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    new JSONAsyncTask(handler).execute(generateFetchURL()).get(10000, TimeUnit.MILLISECONDS);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (TimeoutException e) {
+                    Toast timeoutToast = Toast.makeText(context, "Could not refresh", Toast.LENGTH_SHORT);
+                    timeoutToast.show();
+                    e.printStackTrace();
+                } finally {
+                    adapter.notifyDataSetChanged();
+                    swipeContainer.setRefreshing(false);
+                }
+            }
+        };
+
+        Handler threadHandler = new Handler();
+        threadHandler.post(refreshThread);
+
     }
 
     @Override
@@ -146,6 +146,43 @@ public class LandingPage extends ListActivity implements JSONAsyncTask.ResultHan
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        Log.d("item selected", "" + item.getTitle());
+
+        String itemSelected = item.getTitle().toString();
+
+        if(itemSelected.equals(getString(R.string.sort_hot))){
+            currentSortingStyle = sortStyle.HOT;
+            refresh();
+        } else if(itemSelected.equals(getString(R.string.sort_new))){
+            currentSortingStyle = sortStyle.NEW;
+            refresh();
+        } else if(itemSelected.equals(getString(R.string.sort_rising))){
+            currentSortingStyle = sortStyle.RISING;
+            refresh();
+        } else if(itemSelected.equals(getString(R.string.sort_controversial))){
+            currentSortingStyle = sortStyle.CONTROVERSIAL;
+            refresh();
+        } else if(itemSelected.equals(getString(R.string.sort_top_hour))){
+            currentSortingStyle = sortStyle.TOP_HOUR;
+            refresh();
+        } else if(itemSelected.equals(getString(R.string.sort_top_24_hours))){
+            currentSortingStyle = sortStyle.TOP_24_HOURS;
+            refresh();
+        } else if(itemSelected.equals(getString(R.string.sort_top_week))){
+            currentSortingStyle = sortStyle.TOP_WEEK;
+            refresh();
+        } else if(itemSelected.equals(getString(R.string.sort_top_month))){
+            currentSortingStyle = sortStyle.TOP_MONTH;
+            refresh();
+        } else if(itemSelected.equals(getString(R.string.sort_top_year))){
+            currentSortingStyle = sortStyle.TOP_YEAR;
+            refresh();
+        } else if(itemSelected.equals(getString(R.string.sort_top_all_time))){
+            currentSortingStyle = sortStyle.TOP_ALL_TIME;
+            refresh();
+        } else {
+            //none of the available choices were made, ignore
+        }
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
@@ -191,10 +228,10 @@ public class LandingPage extends ListActivity implements JSONAsyncTask.ResultHan
                     }
                 }
 
-                String name = childData.getString("id");
+                String id = childData.getString("id");
 
                 String title = childData.getString("title");
-                list.add(new GifSoundLink(link, thumbnail, title, name));
+                list.add(new GifSoundLink(link, thumbnail, title, id));
             }
 
             if(adapter == null) {
@@ -211,18 +248,6 @@ public class LandingPage extends ListActivity implements JSONAsyncTask.ResultHan
         }
 
 
-    }
-
-    public void seeLinkComments(View v){
-        //get the row the clicked button is in
-        LinearLayout rowButtonClicked = (LinearLayout)v.getParent();
-
-        //TODO uncomment button from gifsoundlinklayout.xml once functionality to press button and listview row both work
-
-        //TODO find out what row rowButtonClicked was in the list, and open a page to view the
-        //TODO corresponding link's comments from reddit
-
-        rowButtonClicked.refreshDrawableState();
     }
 
     //This class allows us to keep loading content when we get to the bottom of the currently loaded content

@@ -29,7 +29,6 @@ public class JSONAsyncTask extends AsyncTask<String,Integer,String> {
             String webpageContents = readStream(httpURLConnection.getInputStream());
             return webpageContents;
         }
-        //catch (MalformedURLException e) {
         catch (IOException e) {
             e.printStackTrace();
             if (e instanceof MalformedURLException){

@@ -31,12 +31,6 @@ public class GifSoundViewActivity extends YouTubeBaseActivity implements YouTube
             "\t\tYour browser does not support HTML5 video.\n" +
             "\t</video>";
 
-//    final String HTML = "<video autoplay=\"\" loop=\"\" muted=\"\" poster=\"REPLACE_POSTER\" >\n" +
-//            "\t\t<source src=\"REPLACE_WEBM\" type=\"video/webm\">\n" +
-//            "\t\t<source src=\"REPLACE_MP4\" type=\"video/mp4\">\n" +
-//            "\t\tYour browser does not support HTML5 video.\n" +
-//            "\t</video>";
-
 
     private YouTubePlayer youTubePlayer;
     private YouTubePlayerFragment youTubePlayerFragment;
@@ -59,11 +53,9 @@ public class GifSoundViewActivity extends YouTubeBaseActivity implements YouTube
         vg.addView(new MovieView(this));
 
         WebView image = (WebView) findViewById(R.id.web_image);
-//        image.setBackgroundColor(0);
         image.setWebChromeClient(new WebChromeClient());
 
         String html_code = writeHTMLCode();
-//        image.loadUrl(GIF_URL);
         image.loadDataWithBaseURL("", html_code, "text/html", "UTF-8", "");
     }
 
@@ -76,7 +68,6 @@ public class GifSoundViewActivity extends YouTubeBaseActivity implements YouTube
         }
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-//        ft.hide(youTubePlayerFragment);
         ft.commit();
     }
 
@@ -112,7 +103,6 @@ public class GifSoundViewActivity extends YouTubeBaseActivity implements YouTube
             code = code.replace("REPLACE_POSTER", UrlNoExtensions + ".jpg");
             code = code.replace("REPLACE_WEBM", UrlNoExtensions + ".webm");
             code = code.replace("REPLACE_MP4", UrlNoExtensions + ".mp4");
-            Log.d("HTML", code);
 //        }
         return code;
     }
