@@ -10,14 +10,6 @@
     tools:context="cpre388.gifsound.GifSoundViewActivity"
     android:orientation="vertical">
 
-    <TextView android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Title Here"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        android:autoLink="web" />
-
     <WebView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

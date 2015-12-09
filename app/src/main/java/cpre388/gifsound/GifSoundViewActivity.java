@@ -4,9 +4,9 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -39,15 +39,16 @@ public class GifSoundViewActivity extends YouTubeBaseActivity implements YouTube
             "\t</script>\n" +
             "</html>";
 
-    final String HTML_VIDEO = "<video id=\"gif\" width=\"100%\" autoplay loop muted poster=\"REPLACE_POSTER\" style=\"cursor: zoom-in;\">\n" +
+    final String HTML_VIDEO = "<video id=\"gif\" width=\"100%\" controls autoplay loop muted poster=\"REPLACE_POSTER\" style=\"max-width:800px;max-height:800px;\">\n" +
             "\t\t<source src=\"REPLACE_WEBM\" type=\"video/webm\">\n" +
             "\t\t<source src=\"REPLACE_MP4\" type=\"video/mp4\">\n" +
             "\t\tYour browser does not support HTML5 video.\n" +
             "\t</video>\n";
 
-    final String HTML_GIF = "<img id=\"gif\" width=\"100%\" src=\"REPLACE_GIF\" style=\"cursor: zoom-in;\">";
+    final String HTML_GIF = "<img id=\"gif\" width=\"100%\" src=\"REPLACE_GIF\" style=\"max-width:800px;max-height:800px;\">";
 
-    final String SCRIPT = "";//"document.getElementById(\"gif\").play();";
+    //TODO add listener to call videoReady when readyState equals 4
+    final String SCRIPT = "var vid = document.getElementById(\"gif\");\n" ;//+ "while(vid.readyState != 4){} test.videoReady();";
 
 
     private YouTubePlayer youTubePlayer;
@@ -80,15 +81,31 @@ public class GifSoundViewActivity extends YouTubeBaseActivity implements YouTube
         }
         image.getSettings().setJavaScriptEnabled(true);
         image.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-        image.setWebViewClient(new WebViewClient(){
+        /*image.setWebViewClient(new WebViewClient(){
             @Override
             public void onPageFinished(WebView view, String url) {
+                //TODO finished loading webview
                 Log.d("finished", "finished");
+
+                //view.evaluateJavascript("document.getElementById(\"gif\").pause();", null);
+                //view.evaluateJavascript("document.getElementById(\"gif\").play();", null);
+                //youTubePlayer.play();
             }
-        });
+        });*/
+        image.addJavascriptInterface(new JsObject(), "test");
+
+        image.setInitialScale(100);
 
         String html_code = writeHTMLCode();
         image.loadDataWithBaseURL("", html_code, "text/html", "UTF-8", "");
+    }
+
+    class JsObject {
+        @JavascriptInterface
+        public void videoReady(){
+            Log.d("videoStarted", "");
+            youTubePlayer.play();
+        }
     }
 
     @Override
@@ -96,8 +113,11 @@ public class GifSoundViewActivity extends YouTubeBaseActivity implements YouTube
         this.youTubePlayer = youTubePlayer;
 
         if (!wasRestored) {
-            this.youTubePlayer.loadVideo(VIDEO_ID, VIDEO_TIME*1000);
+            //this.youTubePlayer.loadVideo(VIDEO_ID, VIDEO_TIME*1000);
+            this.youTubePlayer.cueVideo(VIDEO_ID, VIDEO_TIME*1000);
         }
+
+        //this.youTubePlayer.pause();
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.commit();
@@ -141,6 +161,8 @@ public class GifSoundViewActivity extends YouTubeBaseActivity implements YouTube
 
     private String writeHTMLCode() {
         String code;
+
+
         if (isGifv) {
             //code = HTML_VIDEO;
             code = testHtml;

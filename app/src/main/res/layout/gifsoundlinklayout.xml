@@ -7,27 +7,30 @@
 
 
     <ImageView
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:id="@+id/previewImage"
         android:contentDescription="@string/preview_image_description" />
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
         android:layout_toEndOf="@+id/previewImage"
-        android:orientation="vertical">
+        android:layout_toStartOf="@+id/viewRedditCommentsButton"
+        android:gravity="left|center_vertical">
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:id="@+id/linkTitle"
-            android:layout_gravity="center_horizontal|top" />
+            android:layout_gravity="left|center_vertical"
+            android:gravity="left|center_vertical" />
     </LinearLayout>
 
     <Button
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:id="@+id/viewRedditCommentsButton"
         android:layout_gravity="right"
         android:focusable="false"
