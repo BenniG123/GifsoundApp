@@ -3,32 +3,21 @@ package cpre388.gifsound;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -52,6 +41,7 @@ public class LandingPage extends ListActivity implements JSONAsyncTask.ResultHan
 
     //TODO change this variable based on the selected sorting style
     sortStyle currentSortingStyle = sortStyle.HOT;
+    private final int MIN_LOAD_COUNT = 25;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -229,9 +219,10 @@ public class LandingPage extends ListActivity implements JSONAsyncTask.ResultHan
                 }
 
                 String id = childData.getString("id");
+                String name = childData.getString("name");
 
                 String title = childData.getString("title");
-                list.add(new GifSoundLink(link, thumbnail, title, id));
+                list.add(new GifSoundLink(link, thumbnail, title, id, name));
             }
 
             if(adapter == null) {
@@ -280,7 +271,7 @@ public class LandingPage extends ListActivity implements JSONAsyncTask.ResultHan
                     currentPage++;
                 }
             }
-            if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
+            if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold) && previousTotal >= MIN_LOAD_COUNT) {
                 String finalURL = generateFetchURL();
                 new JSONAsyncTask(handler).execute(finalURL);
 
@@ -333,7 +324,7 @@ public class LandingPage extends ListActivity implements JSONAsyncTask.ResultHan
         if(adapter == null || adapter.data.size() == 0){
             //nothing for now
         } else {
-            finalURL += "&count=" + (adapter.data.size()) + "&after=" + (adapter.data.get(adapter.data.size() - 1).redditLink);
+            finalURL += "&count=" + (adapter.data.size()) + "&after=" + (adapter.data.get(adapter.data.size() - 1).name);
         }
 
         return finalURL;

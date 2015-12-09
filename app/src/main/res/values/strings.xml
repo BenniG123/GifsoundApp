@@ -6,6 +6,7 @@
     <string name="title_activity_gif_sound_view">GifSoundView</string>
     <string name="title_activity_gif_sound_view_activity">GifSoundViewActivity</string>
     <string name="title_activity_reddit_comments">RedditComments</string>
+    <string name="comments_button_text">☰</string>
 
     <string name="sort_hot">Hot</string>
     <string name="sort_new">New</string>
@@ -17,4 +18,6 @@
     <string name="sort_top_month">Top of this month</string>
     <string name="sort_top_year">Top of this year</string>
     <string name="sort_top_all_time">Top of all time</string>
+
+    <string name="preview_image_description">Thumbnail Image</string>
 </resources>

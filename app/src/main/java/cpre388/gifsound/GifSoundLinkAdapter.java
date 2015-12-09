@@ -4,20 +4,15 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import java.net.URL;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -83,7 +78,7 @@ public class GifSoundLinkAdapter extends ArrayAdapter<GifSoundLink> {
         holder.commentsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent openAppIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://redd.it/" + gifSoundLink.redditLink));
+                Intent openAppIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://reddit.com/r/gifsound/" + gifSoundLink.id));
                 Intent chooseBrowserIntent = Intent.createChooser(openAppIntent, "Choose your browser");
                 context.startActivity(chooseBrowserIntent);
             }
@@ -99,7 +94,6 @@ public class GifSoundLinkAdapter extends ArrayAdapter<GifSoundLink> {
     {
         ImageView previewImage;
         TextView linkTitle;
-        TextView postAuthorDate;
         Button commentsButton;
     }
 }

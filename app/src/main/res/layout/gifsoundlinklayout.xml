@@ -9,22 +9,20 @@
     <ImageView
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:id="@+id/previewImage"/>
+        android:id="@+id/previewImage"
+        android:contentDescription="@string/preview_image_description" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_toEndOf="@+id/previewImage">
+        android:layout_toEndOf="@+id/previewImage"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/linkTitle"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/timeSubmittedAndAuthor"/>
+            android:id="@+id/linkTitle"
+            android:layout_gravity="center_horizontal|top" />
     </LinearLayout>
 
     <Button
@@ -33,8 +31,7 @@
         android:id="@+id/viewRedditCommentsButton"
         android:layout_gravity="right"
         android:focusable="false"
-        android:hint="comments"
-        android:layout_alignParentTop="true"
+        android:hint="@string/comments_button_text"
         android:layout_alignParentEnd="true" />
 
 
