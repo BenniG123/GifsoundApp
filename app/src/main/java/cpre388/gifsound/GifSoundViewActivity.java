@@ -4,7 +4,6 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ViewGroup;
-import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
@@ -48,7 +47,7 @@ public class GifSoundViewActivity extends YouTubeBaseActivity implements YouTube
     final String HTML_GIF = "<img id=\"gif\" width=\"100%\" src=\"REPLACE_GIF\" style=\"max-width:800px;max-height:800px;\">";
 
     //TODO add listener to call videoReady when readyState equals 4
-    final String SCRIPT = "var vid = document.getElementById(\"gif\");\n" ;//+ "while(vid.readyState != 4){} test.videoReady();";
+    final String SCRIPT = "";//"var vid = document.getElementById(\"gif\");\n" + " test.videoReady();";
 
 
     private YouTubePlayer youTubePlayer;
@@ -72,15 +71,43 @@ public class GifSoundViewActivity extends YouTubeBaseActivity implements YouTube
         vg.addView(new MovieView(this));
 
         WebView image = (WebView) findViewById(R.id.web_image);
-        image.setWebChromeClient(new WebChromeClient());
+
+        WebChromeClient webChromeClient = new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int progress) {
+                if (progress == 100) {
+                    /*Runnable runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            while(youTubePlayer == null);
+
+                            while(!youTubePlayer.isPlaying()) {
+                                youTubePlayer.play();
+                            }
+                        }
+                    };
+                    Handler handler = new Handler();
+                    handler.post(runnable);*/
+                    try {
+                        if (youTubePlayer != null && !youTubePlayer.isPlaying()) {
+                            youTubePlayer.play();
+                        }
+                    } catch (IllegalStateException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+
+        image.setWebChromeClient(webChromeClient);
 
         //re-enable autoplay for media
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
         if (SDK_INT > 16) {
             image.getSettings().setMediaPlaybackRequiresUserGesture(false);
         }
-        image.getSettings().setJavaScriptEnabled(true);
-        image.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+        //image.getSettings().setJavaScriptEnabled(true);
+        //image.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         /*image.setWebViewClient(new WebViewClient(){
             @Override
             public void onPageFinished(WebView view, String url) {
@@ -92,7 +119,7 @@ public class GifSoundViewActivity extends YouTubeBaseActivity implements YouTube
                 //youTubePlayer.play();
             }
         });*/
-        image.addJavascriptInterface(new JsObject(), "test");
+        //image.addJavascriptInterface(new JsObject(), "test");
 
         image.setInitialScale(100);
 
@@ -100,21 +127,21 @@ public class GifSoundViewActivity extends YouTubeBaseActivity implements YouTube
         image.loadDataWithBaseURL("", html_code, "text/html", "UTF-8", "");
     }
 
-    class JsObject {
+    /*class JsObject {
         @JavascriptInterface
         public void videoReady(){
             Log.d("videoStarted", "");
             youTubePlayer.play();
         }
-    }
+    }*/
 
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
         this.youTubePlayer = youTubePlayer;
 
         if (!wasRestored) {
-            //this.youTubePlayer.loadVideo(VIDEO_ID, VIDEO_TIME*1000);
-            this.youTubePlayer.cueVideo(VIDEO_ID, VIDEO_TIME*1000);
+            this.youTubePlayer.loadVideo(VIDEO_ID, VIDEO_TIME*1000);
+            //this.youTubePlayer.cueVideo(VIDEO_ID, VIDEO_TIME*1000);
         }
 
         //this.youTubePlayer.pause();
